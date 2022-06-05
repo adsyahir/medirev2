@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "308934130354",
+    "project_id": "medire-c2298",
+    "storage_bucket": "medire-c2298.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:308934130354:android:5ed5319bd2d5b77c7127ab",
+        "android_client_info": {
+          "package_name": "com.medire"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "308934130354-6iu4jjbrme8ji4k2or0a43v742su5uke.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjN3VU90isdYnW_0FZdQgGofOaIbR6t4E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "308934130354-6iu4jjbrme8ji4k2or0a43v742su5uke.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
