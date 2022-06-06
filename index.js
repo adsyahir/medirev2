@@ -16,4 +16,5 @@ PushNotification.configure({
     popInitialNotification: true,
     requestPermissions: true
   })
+  
 AppRegistry.registerComponent(appName, () => App);

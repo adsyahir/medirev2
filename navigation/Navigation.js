@@ -16,7 +16,7 @@ export default function Navigation() {
             headerShown: false,
           }} />
         <Tab.Screen name="Screen_B" component={MedCabinet} />
-        <Tab.Screen name="hello" component={Report} />
+        <Tab.Screen name="Geolocation" component={Report} />
       </Tab.Navigator>
     </NavigationContainer>
   );
