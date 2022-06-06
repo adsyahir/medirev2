@@ -8,10 +8,12 @@ import {name as appName} from './app.json';
 import PushNotification from "react-native-push-notification";
 
 PushNotification.configure({
-    onNotification: function (notification){
-        console.log("NOTIFICATION", notification);
+    // (required) Called when a remote or local notification is opened or received
+    onNotification: function(notification) {
+      console.log('LOCAL NOTIFICATION ==>', notification)
     },
-    requestPermissions:Platform.OS === 'ios'
-});
-
+  
+    popInitialNotification: true,
+    requestPermissions: true
+  })
 AppRegistry.registerComponent(appName, () => App);

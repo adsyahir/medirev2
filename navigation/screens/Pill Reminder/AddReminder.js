@@ -140,16 +140,27 @@ export default function AddReminder({ navigation }) {
       console.log(error);
     }
   };
-
+ useEffect(() => {
   
-  const handleNotification = () => {
-    PushNotification.localNotification({
-      channelId:"test-channel",
-      title:"You clicked on",
-      message:"Take your medicine"
-    })
+  PushNotification.createChannel({
+
+    channelId:"test-channel",
+    channelName:"Test Channel"
   }
 
+  )
+ }, [])
+ 
+   const LocalNotification = () => {
+    PushNotification.localNotification({
+      channelId:"test-channel",
+      bigText:
+        'This is local notification demo in React Native app. Only shown, when expanded.',
+      title: 'Local Notification Title',
+      message: 'Expand me to see more',
+
+    })
+  }
   let today = new Date();
   console.log(today.getTime());
   return (
@@ -213,10 +224,16 @@ export default function AddReminder({ navigation }) {
       <Button
         onPress={() => {
           Submit();
-          handleNotification();
         }}
       >
         Submit
+      </Button>
+      <Button
+        onPress={() => {
+          LocalNotification();
+        }}
+      >
+        Test
       </Button>
     </View>
   );
