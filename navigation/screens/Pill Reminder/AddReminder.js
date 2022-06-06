@@ -26,7 +26,7 @@ import NavigationReminder from "./NavigationReminder";
 import { useNavigation } from "@react-navigation/native";
 import { useRoute } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import PushNotification from 'react-native-push-notification';
 
 const frequency = ["Every Day", "Specific day"];
 const howt = [1, 2, 3, 4, 5, 6, 7];
@@ -141,6 +141,15 @@ export default function AddReminder({ navigation }) {
     }
   };
 
+  
+  const handleNotification = () => {
+    PushNotification.localNotification({
+      channelId:"test-channel",
+      title:"You clicked on",
+      message:"Take your medicine"
+    })
+  }
+
   let today = new Date();
   console.log(today.getTime());
   return (
@@ -204,6 +213,7 @@ export default function AddReminder({ navigation }) {
       <Button
         onPress={() => {
           Submit();
+          handleNotification();
         }}
       >
         Submit
