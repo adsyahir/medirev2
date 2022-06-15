@@ -5,7 +5,7 @@ import PillReminder from "./PillReminder";
 import Reminder from "./Reminder";
 import Dependent from "./Dependent";
 import DepProfile from "./DepProfile";
- 
+import Noti from "./Noti";
 const Stack = createStackNavigator();
 
 export default function FirstScreenNavigator () {

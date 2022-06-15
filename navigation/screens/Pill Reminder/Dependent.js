@@ -14,14 +14,17 @@ import {
   Divider,
 } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LogBox } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {LogBox} from 'react-native';
+import BackgroundTimer from 'react-native-background-timer';
+import PushNotification from 'react-native-push-notification';
+import {useState, useEffect} from 'react';
 
 LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
 
-export default function Dependent({ navigation }) {
+export default function Dependent({navigation}) {
   const [ready, setReady] = React.useState(false);
 
   const [listDep, setDepList] = React.useState([]);
@@ -32,7 +35,7 @@ export default function Dependent({ navigation }) {
 
   const getDepList = async () => {
     try {
-      const depList = await AsyncStorage.getItem("depList");
+      const depList = await AsyncStorage.getItem('depList');
       if (depList != null) {
         setDepList(JSON.parse(depList));
       }
@@ -42,63 +45,113 @@ export default function Dependent({ navigation }) {
   };
   React.useEffect(() => {
     saveDepList(listDep);
+    console.log(listDep);
   }, [listDep]);
 
-  const saveDepList = async (listDep) => {
+  const saveDepList = async listDep => {
     try {
       const stringifyDepList = JSON.stringify(listDep);
-      await AsyncStorage.setItem("depList", stringifyDepList);
+      await AsyncStorage.setItem('depList', stringifyDepList);
     } catch (error) {
       console.log(error);
     }
   };
 
   const registerMed = () => {
-    navigation.navigate("Dep Profile", {
+    navigation.navigate('Dep Profile', {
       listDep: listDep,
       setDepList: setDepList,
     });
   };
-  const renderItemAccessory = (index) => (
+  const renderItemAccessory = index => (
     <Button onPress={() => deleteDepList(index)} size="small">
       <Icon name="trash"></Icon>
     </Button>
   );
 
-  const renderItem = ({ item, index }) => (
+  const renderItem = ({item, index}) => (
     <ListItem
       title={`${item.dep_name}`}
       description={`${item.dep_relay}`}
       accessoryRight={() => renderItemAccessory(item.id)}
-      onPress={() => navigation.navigate("List Medicine",{
-        dep_name: item.dep_name,
-        dep_id: item.id,
-        listDep:listDep,
-        setDepList:setDepList,
-        index:index,
-      })}
+      onPress={() =>
+        navigation.navigate('List Medicine', {
+          dep_name: item.dep_name,
+          dep_id: item.id,
+          listDep: listDep,
+          setDepList: setDepList,
+          index: index,
+        })
+      }
     />
   );
 
-  const deleteDepList = (index) => {
-    Alert.alert("Confirm", "Delete this dependent?", [
+  const deleteDepList = index => {
+    Alert.alert('Confirm', 'Delete this dependent?', [
       {
-        text: "Yes",
-        onPress: () => setDepList(listDep.filter((item) => item.id != index)),
+        text: 'Yes',
+        onPress: () => setDepList(listDep.filter(item => item.id != index)),
       },
       {
-        text: "No",
+        text: 'No',
       },
     ]);
   };
+
+  useEffect(() => {
+    PushNotification.createChannel({
+      channelId: 'test-channel',
+      channelName: 'Test Channel',
+    });
+  }, []);
+
+  /* console.log(listDep[i].dep_med.length) 
+   for(let i = 0; i < listDep.length; i++) {
+       for(let j = 0; j < listDep[j].dep_med.length; j++)
+       {
+        console.log((listDep[i].dep_med[0].time).length)
+       } 
+      }*/
+
+  BackgroundTimer.runBackgroundTimer(() => {
+    for (let i = 0; i < listDep.length; i++) {
+      for (let j = 0; j < listDep[i].dep_med.length; j++) {
+        for (let m = 0; m < listDep[i].dep_med[j].time.length; m++) {
+          let today = new Date();
+          console.log(
+            'time storage: ' +
+              m +
+              ' ' +
+              listDep[i].dep_med[j].time[m].slice(0, 5),
+          );
+          console.log('time in phone: ' + today.toTimeString().slice(0, 5));
+          if (
+            listDep[i].dep_med[j].time[m].slice(0, 5) ===
+            today.toTimeString().slice(0, 5)
+          ) {
+            console.log('yes notification');
+            PushNotification.localNotification({
+              channelId: 'test-channel',
+              bigText:'Take '+ listDep[i].dep_med[j].capsule_num + " capsule",
+              title: listDep[i].dep_med[j].med_name,
+              message: 'Expand me to see more',
+            });
+          } else {
+            console.log('no notification');
+          }
+        }
+        /* console.log(listDep[i].dep_med.length) */
+      }
+    }
+  }, 60000);
+
   return (
     <View style={styles.container}>
       <Button
         style={styles.flex}
         icon="plus"
         mode="contained"
-        onPress={registerMed}
-      >
+        onPress={registerMed}>
         <Icon name="plus"> </Icon>
       </Button>
       <View style={styles.row}>

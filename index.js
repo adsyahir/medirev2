@@ -18,3 +18,4 @@ PushNotification.configure({
   })
   
 AppRegistry.registerComponent(appName, () => App);
+

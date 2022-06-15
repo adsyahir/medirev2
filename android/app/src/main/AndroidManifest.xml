@@ -13,7 +13,8 @@
 />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
         <uses-permission android:name="android.permission.VIBRATE"/>
-
+ <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+      <uses-permission android:name="android.permission.WAKE_LOCK" />
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
@@ -37,6 +38,7 @@
      android:name="com.google.android.geo.API_KEY"
      android:value="AIzaSyA_cN4DE5nlo5H7XAiVFQT6FPeCbsciigA"/>
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
+          <service android:name="com.asterinet.react.bgactions.RNBackgroundActionsTask" />
 
     </application>
 </manifest>

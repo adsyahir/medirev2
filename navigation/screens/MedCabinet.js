@@ -53,6 +53,7 @@ export default function MedCabinet() {
         });
     }
   };
+  
 
   const requestCameraPermission = async () => {
     if (Platform.OS === 'android') {

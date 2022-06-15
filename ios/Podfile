@@ -19,6 +19,8 @@ target 'medire' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
+  pod 'react-native-background-timer', :path => '../node_modules/react-native-background-timer'
+
   target 'medireTests' do
     inherit! :complete
     # Pods for testing

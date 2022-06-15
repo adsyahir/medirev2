@@ -161,6 +161,11 @@ export default function AddReminder({ navigation }) {
 
     })
   }
+
+  function noti ()
+  {
+    navigation.navigate("Noti")
+  }
   let today = new Date();
   console.log(today.getTime());
   return (
@@ -228,13 +233,7 @@ export default function AddReminder({ navigation }) {
       >
         Submit
       </Button>
-      <Button
-        onPress={() => {
-          LocalNotification();
-        }}
-      >
-        Test
-      </Button>
+    
     </View>
   );
 }

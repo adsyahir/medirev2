@@ -10,9 +10,11 @@ import React from 'react';
 import Navigation from './navigation/Navigation';
 import { ApplicationProvider, Layout, Text } from '@ui-kitten/components';
 import * as eva from '@eva-design/eva';
-
+import { useState,useEffect } from "react";
 
 function App() {
+  
+
   return (
     <ApplicationProvider {...eva} theme={eva.light}>
       <Navigation />
