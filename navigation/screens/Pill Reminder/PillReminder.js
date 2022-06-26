@@ -24,8 +24,10 @@ export default function PillReminder({navigation}) {
   let dep_id = route.params.dep_id;
   let listDep = route.params.listDep;
   let setDepList = route.params.setDepList;
+  let relay = route.params.dep_relay;
+
+  let age = route.params.dep_age;
   let i = route.params.index;
-  console.log('+');
   console.log(listDep[i].dep_med);
 
   React.useEffect(() => {
@@ -70,6 +72,14 @@ export default function PillReminder({navigation}) {
       title={`${item.med_name}`}
       description={`${item.how_times} times per day`}
       accessoryRight={() => renderItemAccessory(item.med_id)}
+      onPress={() =>
+        navigation.navigate('Med details', {
+          med_name: item.med_name,
+          capsule_num :item.capsule_num,
+          how_times: item.how_times,
+          time: item.time,
+        })
+      }
     />
   );
   const renderItemAccessory = index => (
@@ -78,7 +88,7 @@ export default function PillReminder({navigation}) {
     </Button>
   );
   const deleteMedList = index => {
-    Alert.alert('Confirm', 'Delete this dependent?', [
+    Alert.alert('Confirm', 'Delete this medicine ?', [
       {
         text: 'Yes',
         onPress: () => onDeleteHandler(index),
@@ -96,9 +106,15 @@ export default function PillReminder({navigation}) {
         dep_med: listDep.dep_med.filter(item => item.med_id !== key),
       })),
     );
+    
   };
   return (
     <View style={styles.container}>
+    <Text>Name: {dep_name}</Text>
+    <Text>Age: {age}</Text>
+    <Text>Relationship: {relay}</Text>
+
+
       <Button
         style={styles.flex}
         icon="plus"

@@ -39,6 +39,7 @@
      android:value="AIzaSyA_cN4DE5nlo5H7XAiVFQT6FPeCbsciigA"/>
         <uses-library android:name="org.apache.http.legacy" android:required="false"/>
           <service android:name="com.asterinet.react.bgactions.RNBackgroundActionsTask" />
-
+<service android:name="com.transistorsoft.locationmanager.service.TrackingService" android:foregroundServiceType="location" />
+       <service android:name="com.transistorsoft.locationmanager.service.LocationRequestService" android:foregroundServiceType="location" />
     </application>
 </manifest>

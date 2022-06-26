@@ -26,7 +26,7 @@ import {useState, useEffect} from 'react';
 import TextRecognition from 'react-native-text-recognition';
 import firestore from '@react-native-firebase/firestore';
 
-export default function MedCabinet() {
+export default function MedCabinet({navigation}) {
   let [userId, setUserId] = useState(null);
   let [userData, setUserData] = useState({});
   const [image, setImage] = useState(null);
@@ -148,6 +148,12 @@ export default function MedCabinet() {
       },
     ]);
   };
+
+  const toWord = () => {
+    navigation.navigate('Word Selector');
+  };
+
+ 
   return (
     <View style={{paddingHorizontal: 35}}>
       <Input
@@ -157,8 +163,8 @@ export default function MedCabinet() {
         style={{padding: 10}}
       />
 
-      <Button onPress={searchUser}>Search User</Button>
-      <Button onPress={chooseImage}>OCR</Button>
+      <Button onPress={searchUser}>Search Medicine</Button>
+      <Button onPress={toWord}>OCR</Button>
       <View style={{marginTop: 10}}>
         <Text>Medicine Name: {userData ? userData.id : ''}</Text>
         <Text>
@@ -169,6 +175,8 @@ export default function MedCabinet() {
     </View>
   );
 }
+
+
 const styles = StyleSheet.create({
   screen: {
     flex: 1,

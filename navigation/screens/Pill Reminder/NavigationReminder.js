@@ -5,7 +5,7 @@ import PillReminder from "./PillReminder";
 import Reminder from "./Reminder";
 import Dependent from "./Dependent";
 import DepProfile from "./DepProfile";
-import Noti from "./Noti";
+import MedDetails from "./MedDetails";
 const Stack = createStackNavigator();
 
 export default function FirstScreenNavigator () {
@@ -16,6 +16,10 @@ export default function FirstScreenNavigator () {
       <Stack.Screen
         name="List Medicine"
         component={PillReminder}
+      />
+      <Stack.Screen
+        name="Med details"
+        component={MedDetails}
       />
       <Stack.Screen name="Add Reminder" component={AddReminder} />
       <Stack.Screen name="Reminder" component={Reminder} />

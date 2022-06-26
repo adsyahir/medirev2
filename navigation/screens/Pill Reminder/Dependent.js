@@ -80,6 +80,8 @@ export default function Dependent({navigation}) {
           dep_id: item.id,
           listDep: listDep,
           setDepList: setDepList,
+          dep_age: item.dep_age,
+          dep_relay: item.dep_relay,
           index: index,
         })
       }
@@ -132,7 +134,7 @@ export default function Dependent({navigation}) {
             console.log('yes notification');
             PushNotification.localNotification({
               channelId: 'test-channel',
-              bigText:'Take '+ listDep[i].dep_med[j].capsule_num + " capsule",
+              bigText: 'Take ' + listDep[i].dep_med[j].capsule_num + ' capsule',
               title: listDep[i].dep_med[j].med_name,
               message: 'Expand me to see more',
             });

@@ -266,6 +266,7 @@ dependencies {
   implementation 'androidx.multidex:multidex:2.0.1'  // <-- ADD THIS DEPENDENCY
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
+  implementation project(':react-native-selectable-text')
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
@@ -321,3 +322,4 @@ def isNewArchitectureEnabled() {
 }
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
