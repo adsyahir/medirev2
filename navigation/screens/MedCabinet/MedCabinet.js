@@ -14,20 +14,35 @@ import {
   Select,
   SelectItem,
   Layout,
-  Icon,
   IndexPath,
   Button,
   CheckBox,
   Text,
   useTheme,
+  
 } from '@ui-kitten/components';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {useState, useEffect} from 'react';
 import TextRecognition from 'react-native-text-recognition';
 import firestore from '@react-native-firebase/firestore';
+import { useRoute } from "@react-navigation/native";
+import Autocomplete from 'react-native-autocomplete-input';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+const filter = (item, query) => item.title.toLowerCase().includes(query.toLowerCase());
 
 export default function MedCabinet({navigation}) {
-  let [userId, setUserId] = useState(null);
+  const route = useRoute();
+  React.useEffect(() => {
+    if (route.params?.text) {
+      // Post updated, do something with `route.params.post`
+      // For example, send the post to the server
+      setUserId(route.params?.text)
+    }
+  }, [route.params?.text]);
+  
+ console.log(route.params?.text)
+  const [userId, setUserId] = useState(route.params?.text);
   let [userData, setUserData] = useState({});
   const [image, setImage] = useState(null);
   const [result, setResult] = useState(null);
@@ -114,23 +129,14 @@ export default function MedCabinet({navigation}) {
   const onSelectImagePress = () =>
     launchImageLibrary({mediaType: 'image'}, onImageSelect);
 
-  const onPhotoSelect = async media => {
-    if (!media.didCancel) {
-      setImage(media.assets[0].uri);
-      console.log(image);
-      const processingResult = await TextRecognition.recognize(image);
-      console.log(processingResult);
-      setUserId(processingResult.toLocaleString());
-    }
-  };
   const onImageSelect = async media => {
-    if (!media.didCancel) {
-      setImage(media.assets[0].uri);
-      console.log(image);
-      const processingResult = await TextRecognition.recognize(image);
+      
+      const processingResult = await TextRecognition.recognize(media.assets[0].uri);
       console.log(processingResult);
-      setUserId(processingResult.toLocaleString());
-    }
+      navigation.navigate("Word Selector", {
+        result: processingResult.toLocaleString(),
+      });
+    
   };
   useEffect(() => {
     setResult(null);
@@ -152,49 +158,122 @@ export default function MedCabinet({navigation}) {
   const toWord = () => {
     navigation.navigate('Word Selector');
   };
+  
+  const [value, setValue] = React.useState(null);
+  const [data, setData] = React.useState([]);
+  const [suggestion, setSuggestion] = React.useState([]);
+  const [selectedValue, setSelectedValue] = useState({});
+  useEffect(() => {
+    firestore()   
+          .collection('Medicines')
+          .get()
+          .then(querySnapshot => {
+            /*
+            A QuerySnapshot allows you to inspect the collection,
+            such as how many documents exist within it,
+            access to the documents within the collection,
+            any changes since the last query and more.
+        */
+            let temp = [];
+            console.log('Total users: ', querySnapshot.size);
+            querySnapshot.forEach(documentSnapshot => {
+              console.log('user Id: ', documentSnapshot.id);
+              /*
+            A DocumentSnapshot belongs to a specific document,
+            With snapshot you can view a documents data,
+            metadata and whether a document actually exists.
+          */
+              let userDetails = {};
+              // Document fields
+              userDetails = documentSnapshot.data();
+              // All the document related data
+              userDetails['id'] = documentSnapshot.id;
+              temp.push({
+                title: userDetails['id'],
+              })
+             
+             
+            });
+            setData(temp)
+          });
+  }, []);
+  console.log( data)
 
+  const searchText =(text) => {
+    let matches = [];
+
+    if(text){
+      matches = data.filter(res => {
+        const regex = new RegExp(`${text.trim()}`, 'i');
+        return res.title.match(regex);
+      })
+        setSuggestion(matches);
+    }else
+    {
+      setSuggestion([])
+    }
+
+  }
  
   return (
-    <View style={{paddingHorizontal: 35}}>
-      <Input
-        placeholder="Enter User Id"
-        onChangeText={userId => setUserId(userId)}
-        value={userId}
-        style={{padding: 10}}
-      />
-
-      <Button onPress={searchUser}>Search Medicine</Button>
-      <Button onPress={toWord}>OCR</Button>
-      <View style={{marginTop: 10}}>
-        <Text>Medicine Name: {userData ? userData.id : ''}</Text>
-        <Text>
-          Medication Indication: {userData ? userData.indication : ''}
-        </Text>
-        <Text>{userId}</Text>
-      </View>
+    <View style={styles.screen}>
+       <Autocomplete autoCapitalize='none'
+       autoCorrect={false}
+       containerStyle={styles.containerStyle}
+       inputContainerStyle={styles.inputContainerStyle}
+       listStyle={styles.listStyle}
+       placeholder={userId}
+      
+       onChangeText={(userId)=>searchText(userId)}
+       data={suggestion}
+       defaultValue={
+       JSON.stringify(selectedValue) === '{}' ?
+            '' :
+            selectedValue.title
+          }
+       flatListProps={{
+        renderItem: ({ item }) => <TouchableOpacity
+              onPress={() => {
+                setSelectedValue(item);
+                setSuggestion([]);
+              }}>
+              <Text style={styles.listTitle}>{item.title}</Text>
+            </TouchableOpacity>,
+      }}
+       
+       />
+       <TouchableOpacity style={styles.icon} onPress={chooseImage}><Icon name="camera"> </Icon></TouchableOpacity>
+       <Button status='info' style={styles.button} onPress={searchUser}><Icon name="search"> </Icon></Button>
+   
     </View>
   );
 }
 
-
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    alignItems: 'center',
+    paddingHorizontal: 35,
   },
   title: {
     fontSize: 35,
     marginVertical: 40,
   },
   button: {
-    backgroundColor: '#47477b',
-    color: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 15,
-    paddingHorizontal: 40,
-    borderRadius: 50,
-    marginTop: 20,
+    position:'relative',
+    right:-270,
+    bottom:1,
+    width:70,
+ 
+  
+  },
+  icon:{
+    position:'relative',
+    right:-230,
+    bottom:-25,
+    width:70,
+  },
+  flex:{
+    flexDirection:'row',
   },
   buttonText: {
     color: '#fff',
@@ -205,4 +284,31 @@ const styles = StyleSheet.create({
     marginTop: 30,
     borderRadius: 10,
   },
+ containerStyle:{
+   position:'absolute',
+   right:100,
+   width:'90%',
+ },
+ inputContainerStyle:{
+   marginVertical:10,
+   marginHorizontal:10,
+   backgroundColor:'blue',
+   borderWidth:2,
+ },
+ listStyle:{
+   marginVertical:10,
+   marginHorizontal:10,
+   backgroundColor:'red',
+ },
+ listContainer:{
+marginHorizontal:25,
+marginVertical:5,
+ },
+ listTitle:{
+   fontSize:15,
+   left:10,
+   backgroundColor:'white',
+width:286,
+paddingLeft:5,
+ }
 });

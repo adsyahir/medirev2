@@ -8,8 +8,26 @@ const Stack = createStackNavigator();
 export default function SecondScreenNavigator () {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="MedCabinet" component={MedCabinet} />
-      <Stack.Screen name="Word Selector" component={WordSelector} />
+      <Stack.Screen name="MedCabinet" component={MedCabinet} options={{
+          title: 'Medication Cabinet',
+          headerStyle: {
+            backgroundColor: '#0095ff',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }} />
+      <Stack.Screen name="Word Selector" component={WordSelector} options={{
+          title: 'Word Selector',
+          headerStyle: {
+            backgroundColor: '#0095ff',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}/>
     </Stack.Navigator>
   );
 };

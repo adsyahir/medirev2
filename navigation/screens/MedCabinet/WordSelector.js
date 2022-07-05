@@ -13,6 +13,7 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import {
+  
   StyleSheet,
   View,
   Text,
@@ -20,26 +21,28 @@ import {
   StatusBar,
   Platform,
   ScrollView,
+  
 } from 'react-native';
-export default function WordSelector() {
+import Clipboard from '@react-native-clipboard/clipboard';
 
-  const[text, setText] = useState("");
+import { useRoute } from "@react-navigation/native";
 
+export default function WordSelector({navigation}) {
 
-  const click = () => { 
-    console.log(text);
-   }
+  const route = useRoute();
+  let result = route.params.result;
+
+  const click = async () => {
+    const text = await Clipboard.getString();
+    navigation.navigate('MedCabinet', {
+      text :text,
+     
+    })
+ }
   return (<View>
- <SelectableText
-          selectable={true}
-          menuItems={["Copy"]}
-          onSelection={({ content: ad }) => {
-    setText(ad)
-  }}
-          style={styles.instructions}
-          value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis eleifend laoreet risus nec accumsan. In bibendum urna id ante vehicula auctor. Donec ipsum nisi, malesuada quis erat ac, molestie facilisis lacus. Vestibulum a erat dui. In imperdiet, purus at venenatis fermentum, dui neque congue est, in suscipit metus magna malesuada ex. In hendrerit tincidunt mi, vel rhoncus eros dignissim non. Nulla tincidunt, tortor et dictum fermentum, sapien leo blandit nunc, nec rutrum nulla libero nec elit. Sed vitae urna sed eros volutpat venenatis. Nulla finibus velit ac odio elementum pharetra. Ut mollis metus est, vitae blandit urna venenatis at."
-        />
-<Button onPress={click}>Hello</Button>
+ <Text selectable={true}>{result}</Text>
+<Button onPress={click}>Submit</Button>
+<Text>View copied text</Text>
   </View>
   )
 }
