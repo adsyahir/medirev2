@@ -40,6 +40,9 @@ export default function AddReminder({ navigation }) {
   let listDep = route.params.listDep;
   let setDepList = route.params.setDepList;
   let i = route.params.index;
+  let age =  route.params.age;
+  let relay = route.params.relay;
+  
 
   const [selectedHow, setSelectedHow] = React.useState(new IndexPath(0));
   const [date, setDate] = useState(new Date());
@@ -125,6 +128,8 @@ export default function AddReminder({ navigation }) {
         listDep: listDep,
         setDepList: setDepList,
         index: i,
+        age: age,
+        relay: relay,
       });
     }
   };
@@ -173,7 +178,7 @@ export default function AddReminder({ navigation }) {
       <View style={styles.row}>
         <Input
           style={styles.input}
-          label="Medicine Name"
+          label="Medicine name"
           placeholder="Enter Medicine Name"
           onChangeText={(text) => setMedName(text)}
           size="medium"
@@ -183,7 +188,7 @@ export default function AddReminder({ navigation }) {
       <View style={styles.row}>
         <Layout level="1">
           <Select
-            label="HOW MANY TIMES A DAY?"
+            label="How many times a day?"
             style={styles.dropDown}
             placeholder="Default"
             value={displayHowt}
@@ -226,7 +231,7 @@ export default function AddReminder({ navigation }) {
         </Select>
       </View>
 
-      <Button
+      <Button status='info'
         onPress={() => {
           Submit();
         }}

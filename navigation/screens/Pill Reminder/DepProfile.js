@@ -143,7 +143,7 @@ export default function DepProfile({navigation }) {
         </Layout>
       </View>
       <View style={styles.row}>
-        <Button onPress={handleSubmit}>Submit</Button>
+        <Button status='info' onPress={handleSubmit}>Submit</Button>
       </View>
     </View>
   );

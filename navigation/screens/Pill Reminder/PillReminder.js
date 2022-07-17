@@ -11,6 +11,7 @@ import {
   Divider,
   List,
   ListItem,
+  
 } from '@ui-kitten/components';
 import {useRoute} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -64,6 +65,8 @@ export default function PillReminder({navigation}) {
       listDep: listDep,
       setDepList: setDepList,
       index: i,
+      age: age,
+      relay: relay,
     });
   };
 
@@ -83,7 +86,7 @@ export default function PillReminder({navigation}) {
     />
   );
   const renderItemAccessory = index => (
-    <Button onPress={() => deleteMedList(index)} size="small">
+    <Button  status='info' onPress={() => deleteMedList(index)} size="small">
       <Icon name="trash"></Icon>
     </Button>
   );
@@ -108,27 +111,46 @@ export default function PillReminder({navigation}) {
     );
     
   };
+
+  console.log(listDep[i].dep_med.length)
   return (
     <View style={styles.container}>
-    <Text>Name: {dep_name}</Text>
-    <Text>Age: {age}</Text>
-    <Text>Relationship: {relay}</Text>
+    <Layout style={styles.layout} level='3'>
+    <View style={styles.row}>
+    <Text category='label' >Name: </Text>
+    <Text category='c1' >{dep_name}</Text>
+    </View>
+    <View style={styles.row}>
+    <Text category='label' >Age: </Text>
+    <Text category='c1' >{age}</Text>
+    </View>
+    <View style={styles.row}>
+    <Text category='label' >Relationship: </Text>
+    <Text category='c1' >{relay}</Text>
+    </View>
+    </Layout>
 
-
+    <Divider/>
       <Button
         style={styles.flex}
         icon="plus"
         mode="contained"
+        status='info'
         onPress={addMedication}>
         <Icon name="plus"> </Icon>
       </Button>
       <View style={styles.row}>
+      {
+      listDep[i].dep_med.length === 0 ? 
+      <Text style={styles.nomed}>No medication</Text>
+        :
         <List
           data={listDep[i].dep_med}
           renderItem={renderItem}
           style={styles.container1}
           ItemSeparatorComponent={Divider}
         />
+      }
       </View>
     </View>
   );
@@ -151,4 +173,15 @@ const styles = StyleSheet.create({
   container1: {
     maxHeight: 2000,
   },
+  row:{
+    flexDirection:'row',
+    marginBottom:5,
+  },
+  layout:{
+   padding:10,
+  },
+  nomed:{
+    margin:150,  
+  color: 'gray',
+  }
 });

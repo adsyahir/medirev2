@@ -1,5 +1,4 @@
 import React from 'react'
-import { SelectableText } from "@alentoma/react-native-selectable-text";
 import {useState, useEffect} from 'react';
 import {
   Input,
@@ -39,11 +38,13 @@ export default function WordSelector({navigation}) {
      
     })
  }
-  return (<View>
+  return (<ScrollView>
+       <Text style={styles.text} category='h1'>Please hold to select a word below and copy. Click submit to finish.</Text>
  <Text selectable={true}>{result}</Text>
-<Button onPress={click}>Submit</Button>
-<Text>View copied text</Text>
-  </View>
+ <View style={styles.row}>
+<Button status='info' style={styles.button} onPress={click}>Submit</Button>
+</View>
+  </ScrollView>
   )
 }
 const styles = StyleSheet.create({
@@ -65,6 +66,19 @@ const styles = StyleSheet.create({
     color: "#333333",
     marginBottom: 5,
     color: "#0000FF"
+  },
+  button:{
+    width:100,
+    marginTop:20,
+  },
+  text:{
+color:'black',
+margin:15,
+fontSize:20,
+  },
+  row:{
+    justifyContent:'center',
+    alignItems:'center',
   }
 });
 

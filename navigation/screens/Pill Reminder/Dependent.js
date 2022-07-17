@@ -24,6 +24,7 @@ LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
 
+
 export default function Dependent({navigation}) {
   const [ready, setReady] = React.useState(false);
 
@@ -64,7 +65,7 @@ export default function Dependent({navigation}) {
     });
   };
   const renderItemAccessory = index => (
-    <Button onPress={() => deleteDepList(index)} size="small">
+    <Button status='info' onPress={() => deleteDepList(index)} size="small">
       <Icon name="trash"></Icon>
     </Button>
   );
@@ -115,7 +116,8 @@ export default function Dependent({navigation}) {
        } 
       }*/
 
-  BackgroundTimer.runBackgroundTimer(() => {
+      /* 
+      BackgroundTimer.runBackgroundTimer(() => {
     for (let i = 0; i < listDep.length; i++) {
       for (let j = 0; j < listDep[i].dep_med.length; j++) {
         for (let m = 0; m < listDep[i].dep_med[j].time.length; m++) {
@@ -142,27 +144,39 @@ export default function Dependent({navigation}) {
             console.log('no notification');
           }
         }
-        /* console.log(listDep[i].dep_med.length) */
+      
       }
     }
   }, 60000);
+
+       */
 
   return (
     <View style={styles.container}>
       <Button
         style={styles.flex}
         icon="plus"
+        status='info'
         mode="contained"
         onPress={registerMed}>
-        <Icon name="plus"> </Icon>
+        
+        <Icon  name="plus"> </Icon>
       </Button>
       <View style={styles.row}>
+      {
+        listDep.length === 0 ?
+        <View style={styles.dependent}>
+        <Text style={{color:'gray'}}> No Dependent</Text>
+        </View>
+        :
         <List
           data={listDep}
           renderItem={renderItem}
           style={styles.container1}
           ItemSeparatorComponent={Divider}
         />
+      }
+
       </View>
     </View>
   );
@@ -184,4 +198,9 @@ const styles = StyleSheet.create({
   container1: {
     maxHeight: 2000,
   },
+  dependent:{
+    justifyContent:'center',
+    alignItems:'center',
+    height:500,
+  }
 });

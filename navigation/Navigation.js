@@ -14,6 +14,8 @@ export default function Navigation() {
     <NavigationContainer>
       <Tab.Navigator screenOptions={{
     "tabBarHideOnKeyboard":"true",
+    
+    
   }}
   tabBarOptions={{
        activeTintColor: '#fff',
@@ -33,8 +35,8 @@ export default function Navigation() {
             headerShown: false,
             tabBarIcon: ({size, color}) => (<Icon name={"medkit"} color={color} size={size} />)            
           }}  />
-        <Tab.Screen name="Geolocation" component={Report} options={{
-          title: 'Geolocation',
+        <Tab.Screen name="Heatlh Care" component={Report} options={{
+          title: 'Health Care',
           headerStyle: {
             backgroundColor: '#0095ff',
           },

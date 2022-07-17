@@ -37,8 +37,8 @@ export default function FirstScreenNavigator () {
       <Stack.Screen
         name="List Medicine"
         component={PillReminder}
-        options={{
-          title: 'Word Selector',
+        options={({ route }) => ({
+          title: route.params.dep_name +' Reminders',
           headerStyle: {
             backgroundColor: '#0095ff',
           },
@@ -46,13 +46,13 @@ export default function FirstScreenNavigator () {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
-        }}/>
+        })}/>
       
       <Stack.Screen
         name="Med details"
         component={MedDetails}
         options={{
-          title: 'Word Selector',
+          title: 'Pill Reminder Details',
           headerStyle: {
             backgroundColor: '#0095ff',
           },
@@ -62,7 +62,7 @@ export default function FirstScreenNavigator () {
           },
         }}/>
       <Stack.Screen name="Add Reminder" component={AddReminder} options={{
-          title: 'Word Selector',
+          title: 'Create Pill Reminder',
           headerStyle: {
             backgroundColor: '#0095ff',
           },

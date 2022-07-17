@@ -7,14 +7,14 @@ import {
   StatusBar,
   Platform,
   ScrollView,
-  FlatList
+  FlatList,
 } from 'react-native';
-import {Callout, Marker} from 'react-native-maps';
-import MapView, {PROVIDER_GOOGLE, Circle} from 'react-native-maps';
-import {check, request, PERMISSIONS, RESULTS} from 'react-native-permissions';
+import { Callout, Marker } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Circle } from 'react-native-maps';
+import { check, request, PERMISSIONS, RESULTS } from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
-import {useState, useEffect} from 'react';
-import {Divider, List, ListItem} from '@ui-kitten/components';
+import { useState, useEffect } from 'react';
+import { Divider, List, ListItem } from '@ui-kitten/components';
 import firestore from '@react-native-firebase/firestore';
 
 export default function Report() {
@@ -23,7 +23,6 @@ export default function Report() {
   const [longitude, setLongitude] = useState(11.934746); //
   let [listData, setListData] = useState([]);
   const [listPlace, setListPlace] = useState([]);
-
 
   function distance(lat1, lat2, lon1, lon2) {
     // The math module contains a function
@@ -85,8 +84,8 @@ export default function Report() {
     }
     Geolocation.getCurrentPosition(
       position => {
-        const {latitude, longitude} = position.coords;
-        setLocation({latitude, longitude});
+        const { latitude, longitude } = position.coords;
+        setLocation({ latitude, longitude });
         setLatitude(latitude);
         setLongitude(longitude);
         console.log('current latitude' + latitude);
@@ -95,65 +94,46 @@ export default function Report() {
           .collection('places')
           .get()
           .then(querySnapshot => {
-            /*
-            A QuerySnapshot allows you to inspect the collection,
-            such as how many documents exist within it,
-            access to the documents within the collection,
-            any changes since the last query and more.
-        */
+        
             let temp = [];
             console.log('Total users: ', querySnapshot.size);
             querySnapshot.forEach(documentSnapshot => {
               console.log('user Id: ', documentSnapshot.id);
-              /*
-            A DocumentSnapshot belongs to a specific document,
-            With snapshot you can view a documents data,
-            metadata and whether a document actually exists.
-          */
+          
               let userDetails = {};
-              // Document fields
+          
               userDetails = documentSnapshot.data();
-              // All the document related data
+      
               userDetails['id'] = documentSnapshot.id;
 
-              console.log(userDetails['latitude'])
-              console.log(userDetails['longitude'])
-              if (
-                distance(
-                  userDetails['latitude'],
-                  latitude,
-                  userDetails['longitude'],
-                  longitude,
-                ) < 10
-              )
-              {
+              console.log(userDetails['latitude']);
+              console.log(userDetails['longitude']);
+              if (distance(userDetails['latitude'],latitude,userDetails['longitude'],longitude,) < 10) {
                 temp.push(userDetails);
-                setListData(temp)
-              }
-              else{
-                console.log("no push")
+                setListData(temp);
+              } else {
+                console.log('no push');
               }
             });
-            setListPlace(temp)
+            setListPlace(temp);
           });
       },
       error => {
         console.log(error.code, error.message);
       },
 
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 100000},
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 100000 },
     );
   };
-  console.log("hello"+listData)
+  console.log('hello' + listData);
   useEffect(() => {
     handleLocationPermission();
-    
   }, []);
- 
-  const renderItem = ({item}) => (
+
+  const renderItem = ({ item }) => (
     <ListItem title={`${item.id}`} description={`${item.address}`} />
   );
-/* 
+  /* 
   function ren() {
     if (listPlace.length === 0) {
       return <Text>No nearby clinics or pharmacies</Text>;
@@ -168,7 +148,7 @@ export default function Report() {
       );
     }
 */
-/* function place() {
+  /* function place() {
   listPlace.map(item => {
     return (
 
@@ -204,25 +184,29 @@ export default function Report() {
             strokeColor={'blue'}
             fillColor={'rgba(230,238,255,0.5)'}
             showsUserLocation={true}
-            // onRegionChangeComplete = { this.onRegionChangeComplete.bind(this) }
+          // onRegionChangeComplete = { this.onRegionChangeComplete.bind(this) }
           />
           {listData.map((item, index) => {
-            return(
-              <Marker key={index}
-            coordinate={{latitude: item.latitude, longitude: item.longitude}}
-            title={item.id}></Marker> 
-            )
+            return (
+              <Marker
+                key={index}
+                coordinate={{
+                  latitude: item.latitude,
+                  longitude: item.longitude,
+                }}
+                title={item.id}></Marker>
+            );
           })}
-        
         </MapView>
       </SafeAreaView>
-      <View style={styles.container1}>  
-      <List
+      <View style={styles.container1}>
+        <List
           style={styles.container1}
           data={listData}
           ItemSeparatorComponent={Divider}
           renderItem={renderItem}
-        /></View>
+        />
+      </View>
     </View>
   );
 }

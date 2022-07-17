@@ -24,10 +24,10 @@ import {
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import {useState, useEffect} from 'react';
 import TextRecognition from 'react-native-text-recognition';
-import firestore from '@react-native-firebase/firestore';
 import { useRoute } from "@react-navigation/native";
 import Autocomplete from 'react-native-autocomplete-input';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import firestore from '@react-native-firebase/firestore';
 
 const filter = (item, query) => item.title.toLowerCase().includes(query.toLowerCase());
 
@@ -38,20 +38,21 @@ export default function MedCabinet({navigation}) {
       // Post updated, do something with `route.params.post`
       // For example, send the post to the server
       setUserId(route.params?.text)
+      console.log("hello"+userId);
     }
   }, [route.params?.text]);
   
- console.log(route.params?.text)
-  const [userId, setUserId] = useState(route.params?.text);
+  
+  const [userId, setUserId] = useState();
   let [userData, setUserData] = useState({});
   const [image, setImage] = useState(null);
   const [result, setResult] = useState(null);
-
+ 
   const searchUser = () => {
-    if (userId) {
+    if (selectedValue.title) {
       firestore()
         .collection('Medicines')
-        .doc(userId)
+        .doc(selectedValue.title)
         .get()
         .then(documentSnapshot => {
           /*
@@ -68,6 +69,7 @@ export default function MedCabinet({navigation}) {
         });
     }
   };
+
   
 
   const requestCameraPermission = async () => {
@@ -115,7 +117,7 @@ export default function MedCabinet({navigation}) {
       maxWidth: 300,
       maxHeight: 550,
       quality: 1,
-      videoQuality: 'low',
+      videoQuality: 'high',
       durationLimit: 30, //Video max duration in seconds
       saveToPhotos: true,
     };
@@ -125,9 +127,16 @@ export default function MedCabinet({navigation}) {
       launchCamera(options, onPhotoSelect);
     }
   };
-
+  const onPhotoSelect = async media => {
+      
+    const processingResult = await TextRecognition.recognize(media.assets[0].uri);
+    console.log(processingResult);
+    navigation.navigate("Word Selector", {
+      result: processingResult.toLocaleString(),
+    });
+};
   const onSelectImagePress = () =>
-    launchImageLibrary({mediaType: 'image'}, onImageSelect);
+    launchImageLibrary({mediaType: 'photo'}, onImageSelect);
 
   const onImageSelect = async media => {
       
@@ -146,7 +155,7 @@ export default function MedCabinet({navigation}) {
     Alert.alert('Confirm', 'Image from?', [
       {
         text: 'Capture',
-        onPress: () => onTakePhoto('photo'),
+        onPress: () => onTakePhoto('image'),
       },
       {
         text: 'Library',
@@ -162,7 +171,7 @@ export default function MedCabinet({navigation}) {
   const [value, setValue] = React.useState(null);
   const [data, setData] = React.useState([]);
   const [suggestion, setSuggestion] = React.useState([]);
-  const [selectedValue, setSelectedValue] = useState({});
+  const [selectedValue, setSelectedValue] = useState({userId});
   useEffect(() => {
     firestore()   
           .collection('Medicines')
@@ -200,6 +209,8 @@ export default function MedCabinet({navigation}) {
   console.log( data)
 
   const searchText =(text) => {
+
+    setUserId(text);
     let matches = [];
 
     if(text){
@@ -222,20 +233,21 @@ export default function MedCabinet({navigation}) {
        containerStyle={styles.containerStyle}
        inputContainerStyle={styles.inputContainerStyle}
        listStyle={styles.listStyle}
-       placeholder={userId}
-      
+       placeholder={"Please enter medicine"}
+         value={userId}
        onChangeText={(userId)=>searchText(userId)}
        data={suggestion}
        defaultValue={
        JSON.stringify(selectedValue) === '{}' ?
             '' :
-            selectedValue.title
+            selectedValue.title 
           }
        flatListProps={{
         renderItem: ({ item }) => <TouchableOpacity
               onPress={() => {
                 setSelectedValue(item);
                 setSuggestion([]);
+                setUserId(item.title)
               }}>
               <Text style={styles.listTitle}>{item.title}</Text>
             </TouchableOpacity>,
@@ -244,7 +256,17 @@ export default function MedCabinet({navigation}) {
        />
        <TouchableOpacity style={styles.icon} onPress={chooseImage}><Icon name="camera"> </Icon></TouchableOpacity>
        <Button status='info' style={styles.button} onPress={searchUser}><Icon name="search"> </Icon></Button>
-   
+       {
+        userId === '' ?
+       <Text></Text>
+        :
+        <View style={styles.indication}>
+        <Text>
+         {userData ? userData.indication : ''}
+        </Text>
+        </View>
+       }
+       
     </View>
   );
 }
@@ -263,8 +285,6 @@ const styles = StyleSheet.create({
     right:-270,
     bottom:1,
     width:70,
- 
-  
   },
   icon:{
     position:'relative',
@@ -305,10 +325,14 @@ marginHorizontal:25,
 marginVertical:5,
  },
  listTitle:{
-   fontSize:15,
+   fontSize:20,
    left:10,
    backgroundColor:'white',
 width:286,
 paddingLeft:5,
+ },
+ indication:{
+   
+   marginTop:100,
  }
 });

@@ -15,6 +15,8 @@ import {
 } from '@ui-kitten/components';
 import {useRoute} from '@react-navigation/native';
 
+const _12FromTo24Hours = require("12fromto24hours");
+
 export default function MedDetails() {
   const route = useRoute();
   let med_name = route.params.med_name;
@@ -36,12 +38,46 @@ export default function MedDetails() {
 
   return (
     <View>
-      <Text>Medicine name: {med_name}</Text>
-      <Text>Number of capsule: {capsule_num}</Text>
-      <Text>Times a day: {how_times}</Text>
+      <Layout style={styles.layout}  level='3'>
+      <View style={styles.row}>
+    <Text category='label' >Medication name: </Text>
+    <Text category='c1' >{med_name}</Text>
+    </View>
+    <View style={styles.row}>
+    <Text category='label' >Number of capsule: </Text>
+    <Text category='c1' >{capsule_num}</Text>
+    </View>
+    <View style={styles.row}>
+    <Text category='label' >Times a day: </Text>
+    <Text category='c1' >{how_times}</Text>
+    </View>
       {masa.map((item, index) => (
-        <Text key={index}>Time {index+1}:{item}</Text>
+        <View style={styles.row} key={index}>
+    <Text category='label' >Time {index+1} : </Text>
+    <Text category='c1' >{_12FromTo24Hours(item.slice(0,5))}</Text>
+    </View>
       ))}
+    </Layout>
     </View>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  container1: {
+    maxHeight: 2000,
+  },
+  row:{
+    flexDirection:'row',
+    marginBottom:5,
+  },
+  layout:{
+   padding:10,
+  },
+  nomed:{
+    margin:150,  
+  color: 'gray',
+  }
+});
