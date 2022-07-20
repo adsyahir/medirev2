@@ -19,6 +19,7 @@ import {
   CheckBox,
   Text,
   useTheme,
+  Card
   
 } from '@ui-kitten/components';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
@@ -44,7 +45,7 @@ export default function MedCabinet({navigation}) {
   
   
   const [userId, setUserId] = useState();
-  let [userData, setUserData] = useState({});
+  let [userData, setUserData] = useState();
   const [image, setImage] = useState(null);
   const [result, setResult] = useState(null);
  
@@ -209,9 +210,9 @@ export default function MedCabinet({navigation}) {
   console.log( data)
 
   const searchText =(text) => {
-
     setUserId(text);
     let matches = [];
+    setUserData('')
 
     if(text){
       matches = data.filter(res => {
@@ -261,16 +262,22 @@ export default function MedCabinet({navigation}) {
        <Text></Text>
         :
         <View style={styles.indication}>
-        <Text>
-         {userData ? userData.indication : ''}
+        {
+          userData ? <Card>
+        <Text category="p1">
+        <Text category='label' style={{fontSize:15}}>Indication: </Text>
+        
+        {userData.indication} 
         </Text>
+        </Card>:<Text></Text>
+        }
+    
         </View>
        }
        
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -291,6 +298,7 @@ const styles = StyleSheet.create({
     right:-230,
     bottom:-25,
     width:70,
+    zIndex:2,
   },
   flex:{
     flexDirection:'row',
@@ -308,6 +316,7 @@ const styles = StyleSheet.create({
    position:'absolute',
    right:100,
    width:'90%',
+   zIndex:2,
  },
  inputContainerStyle:{
    marginVertical:10,
@@ -332,7 +341,8 @@ width:286,
 paddingLeft:5,
  },
  indication:{
-   
-   marginTop:100,
+   marginTop:50,
+   marginLeft:-20,
+   flexDirection:'row',
  }
 });

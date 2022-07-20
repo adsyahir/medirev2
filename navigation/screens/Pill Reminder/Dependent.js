@@ -116,7 +116,7 @@ export default function Dependent({navigation}) {
        } 
       }*/
 
-      /* 
+      
       BackgroundTimer.runBackgroundTimer(() => {
     for (let i = 0; i < listDep.length; i++) {
       for (let j = 0; j < listDep[i].dep_med.length; j++) {
@@ -149,7 +149,7 @@ export default function Dependent({navigation}) {
     }
   }, 60000);
 
-       */
+       
 
   return (
     <View style={styles.container}>
