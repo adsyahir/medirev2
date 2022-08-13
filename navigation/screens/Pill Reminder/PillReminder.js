@@ -17,6 +17,7 @@ import {useRoute} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useState,useEffect} from 'react';
 
 export default function PillReminder({navigation}) {
   const route = useRoute();
@@ -25,10 +26,14 @@ export default function PillReminder({navigation}) {
   let dep_id = route.params.dep_id;
   let listDep = route.params.listDep;
   let setDepList = route.params.setDepList;
-  let relay = route.params.dep_relay;
+  let dep_relay = route.params.dep_relay;
+   
 
-  let age = route.params.dep_age;
+  let dep_age = route.params.dep_age;
   let i = route.params.index;
+
+  const[test,SetTest] = useState(listDep);
+
   console.log(listDep[i].dep_med);
 
   React.useEffect(() => {
@@ -65,11 +70,11 @@ export default function PillReminder({navigation}) {
       listDep: listDep,
       setDepList: setDepList,
       index: i,
-      age: age,
-      relay: relay,
+      dep_age: dep_age,
+      dep_relay:  dep_relay,
     });
   };
-
+  
   const renderItem = ({item, index}) => (
     <ListItem
       title={`${item.med_name}`}
@@ -109,6 +114,12 @@ export default function PillReminder({navigation}) {
         dep_med: listDep.dep_med.filter(item => item.med_id !== key),
       })),
     );
+    SetTest(test =>
+      test.map(test => ({
+        ...test,
+        dep_med: test.dep_med.filter(item => item.med_id !== key),
+      })),
+    );
     
   };
 
@@ -122,11 +133,11 @@ export default function PillReminder({navigation}) {
     </View>
     <View style={styles.row}>
     <Text category='label' >Age: </Text>
-    <Text category='c1' >{age}</Text>
+    <Text category='c1' >{dep_age}</Text>
     </View>
     <View style={styles.row}>
     <Text category='label' >Relationship: </Text>
-    <Text category='c1' >{relay}</Text>
+    <Text category='c1' >{dep_relay}</Text>
     </View>
     </Layout>
 
@@ -142,10 +153,12 @@ export default function PillReminder({navigation}) {
       <View style={styles.row}>
       {
       listDep[i].dep_med.length === 0 ? 
+      <View style={styles.dependent}> 
       <Text style={styles.nomed}>No medication</Text>
+      </View>
         :
         <List
-          data={listDep[i].dep_med}
+          data={test[i].dep_med}
           renderItem={renderItem}
           style={styles.container1}
           ItemSeparatorComponent={Divider}
@@ -181,7 +194,12 @@ const styles = StyleSheet.create({
    padding:10,
   },
   nomed:{
-    margin:150,  
   color: 'gray',
+  },
+  dependent:{
+    justifyContent:'center',
+    alignItems:'center',
+    flex:1,
+    height:500,
   }
 });

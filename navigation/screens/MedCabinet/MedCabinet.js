@@ -295,7 +295,7 @@ const styles = StyleSheet.create({
   },
   icon:{
     position:'relative',
-    right:-230,
+    right:-220,
     bottom:-25,
     width:70,
     zIndex:2,

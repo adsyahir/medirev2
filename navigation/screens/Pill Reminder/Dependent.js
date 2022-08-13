@@ -24,6 +24,9 @@ LogBox.ignoreLogs([
   'Non-serializable values were found in the navigation state',
 ]);
 
+LogBox.ignoreLogs([
+  ' '
+]);
 
 export default function Dependent({navigation}) {
   const [ready, setReady] = React.useState(false);

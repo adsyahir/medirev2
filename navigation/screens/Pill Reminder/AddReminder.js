@@ -40,8 +40,8 @@ export default function AddReminder({ navigation }) {
   let listDep = route.params.listDep;
   let setDepList = route.params.setDepList;
   let i = route.params.index;
-  let age =  route.params.age;
-  let relay = route.params.relay;
+  let dep_age =  route.params.dep_age;
+  let dep_relay = route.params.dep_relay;
   
 
   const [selectedHow, setSelectedHow] = React.useState(new IndexPath(0));
@@ -128,8 +128,8 @@ export default function AddReminder({ navigation }) {
         listDep: listDep,
         setDepList: setDepList,
         index: i,
-        age: age,
-        relay: relay,
+        dep_age: dep_age,
+        dep_relay: dep_relay,
       });
     }
   };
@@ -188,7 +188,7 @@ export default function AddReminder({ navigation }) {
       <View style={styles.row}>
         <Layout level="1">
           <Select
-            label="How many times a day?"
+            label="How many times a day"
             style={styles.dropDown}
             placeholder="Default"
             value={displayHowt}
@@ -198,6 +198,9 @@ export default function AddReminder({ navigation }) {
             {howt.map(renderOption)}
           </Select>
         </Layout>
+      </View>
+      <View style={styles.rowLabel}>
+        <Text style={styles.text} category='label'>Time</Text>
       </View>
       <View style={styles.row}>
         <Button
@@ -259,6 +262,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     justifyContent: "flex-end",
     fontSize: 12,
+    color:"gray",
   },
   row: {
     marginBottom: 20,
@@ -266,9 +270,16 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignSelf: "flex-start",
   },
+  rowLabel: {
+    marginBottom: 5,
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    alignSelf: "flex-start",
+  
+  },
   dropDown: {
     width: 350,
-    marginBottom: 10,
+    marginBottom: 0,
     color: "black",
   },
   button: {

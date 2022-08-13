@@ -26,15 +26,15 @@ export default function MedDetails() {
   let t = route.params.time;
   const [masa, setMasa] = useState([]);
   
-
+console.log(t)
     let m = 0;
-    let i = 23;
+    let i = 5;
     for (let j = 0; j < time; j++) {
       masa.push(t.toString().slice(m, i));
       m = m + 24;
       i = i + 24;
     }
-  
+  console.log(masa)
 
   return (
     <View>
