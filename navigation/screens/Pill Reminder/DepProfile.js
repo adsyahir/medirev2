@@ -35,6 +35,7 @@ const relay = [
   "Niece",
   "Nephew",
   "Cousin",
+  "Grandfather",
   "Grandmother",
   "Granddaughter",
   "Grandson",

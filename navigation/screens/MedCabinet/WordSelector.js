@@ -38,11 +38,14 @@ export default function WordSelector({navigation}) {
      
     })
  }
+
+
+
   return (<ScrollView>
        <Text style={styles.text} category='h1'>Please hold to select a word below and copy. Click submit to finish.</Text>
  <Text selectable={true}>{result}</Text>
  <View style={styles.row}>
-<Button status='info' style={styles.button} onPress={click}>Submit</Button>
+<Button status='info' style={styles.button} onPress={click} >Submit</Button>
 </View>
   </ScrollView>
   )

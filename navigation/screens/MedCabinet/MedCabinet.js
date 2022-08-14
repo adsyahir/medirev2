@@ -256,7 +256,7 @@ export default function MedCabinet({navigation}) {
        
        />
        <TouchableOpacity style={styles.icon} onPress={chooseImage}><Icon name="camera"> </Icon></TouchableOpacity>
-       <Button status='info' style={styles.button} onPress={searchUser}><Icon name="search"> </Icon></Button>
+       <Button status='info' style={styles.button} onPress={searchUser} ><Icon name="search"> </Icon></Button>
        {
         userId === '' ?
        <Text></Text>

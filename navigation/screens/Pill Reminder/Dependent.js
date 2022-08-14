@@ -139,7 +139,7 @@ export default function Dependent({navigation}) {
             console.log('yes notification');
             PushNotification.localNotification({
               channelId: 'test-channel',
-              bigText: 'Take ' + listDep[i].dep_med[j].capsule_num + ' capsule',
+              bigText: listDep[i].dep_name +" : "+ 'Take ' + listDep[i].dep_med[j].capsule_num + ' capsule',
               title: listDep[i].dep_med[j].med_name,
               message: 'Expand me to see more',
             });
